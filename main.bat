@@ -1,6 +1,5 @@
 @echo off
 title water.bat
-set /a ver=1.0
 color 0b
 echo set shellobj = CreateObject("WScript.Shell") >> c.vbs
 echo Wscript.Sleep(2000) >> c.vbs
@@ -91,7 +90,6 @@ echo.
 call :c 0a "1) Ip informations " /n
 call :c 0a "2) Network scan" /n
 call :c 0a "3) Live ip" /n 
-call :c 0b "4) Powershells basics malware" /n 
 echo.
 call :c 0d "Parrot"&call :c 0b ":/ "
 if exist d.vbs start d.vbs
@@ -99,9 +97,7 @@ set /p choice=
 if %choice% == 1 goto ip_resolver
 if %choice% == 2 goto uping
 if %choice% == 3 goto liveip
-if %choice% == 4 goto pwsh
 if %choice% == hid goto hidsecret
-if %choice% == exit exit
 goto menu
 
 :hidsecret
@@ -156,8 +152,8 @@ ping -w 1 -n 1 192.168.%first%.%second% | find "TTL=" >nul
 if errorlevel 1 ( 
     goto 1895462
 ) else (
-	set /a fnd=fnd+1
-	if 192.168.%first%.%second%==%NetworkIP% call :c 0F "192.168.%first%.%second%: "&call :c 0A "FOUND"&call :c 0B " (YOU)" /n&goto 1895462
+  set /a fnd=fnd+1
+  if 192.168.%first%.%second%==%NetworkIP% call :c 0F "192.168.%first%.%second%: "&call :c 0A "FOUND"&call :c 0B " (YOU)" /n&goto 1895462
     call :c 0F "192.168.%first%.%second%: "&call :c 0A "FOUND" /n
 )
 :1895462
@@ -166,8 +162,7 @@ if %second%==255 goto endping
 goto looping
 :endping
 echo.
-title water.bat
-call :c 0a "ping finished with "&call :c 0b "%fnd% "&call :c 0a "host found." /n
+call :c 0a "ping finished with "&call :c 0a "%fnd%"&call :c 0a "host found." /n
 echo press someting to continue
 pause >nul
 goto menu
@@ -180,10 +175,3 @@ call :c 0C "%PublicIP% "&call :c 0B "at "&call :c 0A "(%time%)" /n
 echo %PublicIP%| clip
 ping 127.0.0.1 -n 1 > nul
 goto 14785
-
-:pwsh
-cls
-call :c 0b "1) sda poisoner" /n 
-call :c 0b "1) " /n 
-pause
-goto pwsh
