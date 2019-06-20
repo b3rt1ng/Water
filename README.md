@@ -27,5 +27,5 @@ this file isn't pure batch. it's made with:
 -> python features.
 ```
 
-[check the releases](https://github.com/b3rt1ng/Water/files/3311720/water.zip)
+[Download](https://github.com/b3rt1ng/Water/files/3311720/water.zip)
 
