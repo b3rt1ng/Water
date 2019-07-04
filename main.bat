@@ -1,5 +1,6 @@
 @echo off
 title water.bat
+set /a admina=0
 color 0b
 echo set shellobj = CreateObject("WScript.Shell") >> c.vbs
 echo Wscript.Sleep(2000) >> c.vbs
@@ -7,17 +8,13 @@ echo shellobj.sendkeys "{F11}" >> c.vbs
 start /min c.vbs
 ping 127.0.0.1 -n 2 > nul
 del c.vbs
-set "file=https://puu.sh/DI81J/82f33a7ee3.mp3"
-( echo Set Sound = CreateObject("WMPlayer.OCX.7"^)
-  echo Sound.URL = "%file%"
-  echo Sound.Controls.play
-  echo do while Sound.currentmedia.duration = 0
-  echo wscript.sleep 100
-  echo loop
-  echo wscript.sleep (int(Sound.currentmedia.duration^)+1^)*1000) >sound.vbs
-start /min sound.vbs
-ping 127.0.0.1 -n 2 > nul
-del sound.vbs
+:check_Permissions
+NET SESSION >nul 2>&1
+IF %ERRORLEVEL% EQU 0 (
+    set /a admina=1
+) ELSE (
+    set /a admina=0
+)
 goto menu
 setlocal disableDelayedExpansion
 set q=^"
@@ -87,9 +84,13 @@ echo +#+ +#+#+ +#+ +#+     +#+ +#+     +#+        +#+    +#+
 echo #+#+# #+#+#  #+#     #+# #+#     #+#        #+#    #+#     
 echo ###   ###   ###     ### ###     ########## ###    ### 
 echo.
+if %admina% == 0 call :c 0c "WARNING, ADMINS RIGHTS NOT GRANTED !" /n
+echo.
 call :c 0a "1) Ip informations " /n
 call :c 0a "2) Network scan" /n
 call :c 0a "3) Live ip" /n 
+call :c 0a "4) Local dns poisoning" /n 
+call :c 0a "5) See my packet trafic to a website" /n 
 echo.
 call :c 0d "Parrot"&call :c 0b ":/ "
 if exist d.vbs start d.vbs
@@ -97,7 +98,10 @@ set /p choice=
 if %choice% == 1 goto ip_resolver
 if %choice% == 2 goto uping
 if %choice% == 3 goto liveip
+if %choice% == 4 goto dnspoi
+if %choice% == 5 goto tracertt
 if %choice% == hid goto hidsecret
+if %choice% == exit exit
 goto menu
 
 :hidsecret
@@ -152,8 +156,8 @@ ping -w 1 -n 1 192.168.%first%.%second% | find "TTL=" >nul
 if errorlevel 1 ( 
     goto 1895462
 ) else (
-  set /a fnd=fnd+1
-  if 192.168.%first%.%second%==%NetworkIP% call :c 0F "192.168.%first%.%second%: "&call :c 0A "FOUND"&call :c 0B " (YOU)" /n&goto 1895462
+	set /a fnd=fnd+1
+	if 192.168.%first%.%second%==%NetworkIP% call :c 0F "192.168.%first%.%second%: "&call :c 0A "FOUND"&call :c 0B " (YOU)" /n&goto 1895462
     call :c 0F "192.168.%first%.%second%: "&call :c 0A "FOUND" /n
 )
 :1895462
@@ -162,7 +166,8 @@ if %second%==255 goto endping
 goto looping
 :endping
 echo.
-call :c 0a "ping finished with "&call :c 0a "%fnd%"&call :c 0a "host found." /n
+title water.bat
+call :c 0a "ping finished with "&call :c 0b "%fnd% "&call :c 0a "host found." /n
 echo press someting to continue
 pause >nul
 goto menu
@@ -175,3 +180,37 @@ call :c 0C "%PublicIP% "&call :c 0B "at "&call :c 0A "(%time%)" /n
 echo %PublicIP%| clip
 ping 127.0.0.1 -n 1 > nul
 goto 14785
+
+:pwsh
+cls
+call :c 0b "1) sda poisoner" /n 
+call :c 0b "00) goto menu " /n 
+set /p choicep= 
+if %choicep% == 00 goto menu
+goto pwsh
+
+:dnspoi
+cls
+echo 1) Try on my computer.
+echo 2) Generate a batch file.
+set /p choicep= 
+if %choicep% == 1 goto dnsme
+if %choicep% == 2 goto dnsgen
+:dnsme
+echo name a web site you want to apply the attack
+set /p foolsite= 
+echo set up the ip you want it to redirect.
+set /p foolip= 
+cls
+echo You can try to join %foolsite% to see if it work.
+echo 
+echo press any key to continue.
+pause > nul
+goto menu
+
+:tracertt
+cls
+set /p wbst= set a website url:
+tracert %wbst%
+pause > nul
+goto menu
