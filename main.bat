@@ -1,13 +1,14 @@
 @echo off
 title water.bat
 set /a admina=0
+set /a shodanapi=0
 color 0b
-echo set shellobj = CreateObject("WScript.Shell") >> c.vbs
-echo Wscript.Sleep(2000) >> c.vbs
-echo shellobj.sendkeys "{F11}" >> c.vbs
-start /min c.vbs
-ping 127.0.0.1 -n 2 > nul
-del c.vbs
+::echo set shellobj = CreateObject("WScript.Shell") >> c.vbs
+::echo Wscript.Sleep(2000) >> c.vbs
+::echo shellobj.sendkeys "{F11}" >> c.vbs
+::start /min c.vbs
+::ping 127.0.0.1 -n 2 > nul
+::del c.vbs
 :check_Permissions
 NET SESSION >nul 2>&1
 IF %ERRORLEVEL% EQU 0 (
@@ -76,29 +77,28 @@ exit /b
 cls
 set /a choice = 0
 set back = 1
-echo     :::       :::     ::: ::::::::::: :::::::::: ::::::::: 
-echo    :+:       :+:   :+: :+:   :+:     :+:        :+:    :+: 
-echo   +:+       +:+  +:+   +:+  +:+     +:+        +:+    +:+  
-echo  +#+  +:+  +#+ +#++:++#++: +#+     +#++:++#   +#++:++#:    
-echo +#+ +#+#+ +#+ +#+     +#+ +#+     +#+        +#+    +#+    
-echo #+#+# #+#+#  #+#     #+# #+#     #+#        #+#    #+#     
-echo ###   ###   ###     ### ###     ########## ###    ### 
+echo     :::       :::     ::: ::::::::::: :::::::::: :::::::::
+echo    :+:       :+:   :+: :+:   :+:     :+:        :+:    :+:
+echo   +:+       +:+  +:+   +:+  +:+     +:+        +:+    +:+
+echo  +#+  +:+  +#+ +#++:++#++: +#+     +#++:++#   +#++:++#:
+echo +#+ +#+#+ +#+ +#+     +#+ +#+     +#+        +#+    +#+
+echo #+#+# #+#+#  #+#     #+# #+#     #+#        #+#    #+#
+echo ###   ###   ###     ### ###     ########## ###    ###
 echo.
 if %admina% == 0 call :c 0c "WARNING, ADMINS RIGHTS NOT GRANTED !" /n
 echo.
 call :c 0a "1) Ip informations " /n
 call :c 0a "2) Network scan" /n
-call :c 0a "3) Live ip" /n 
-call :c 0a "4) Local dns poisoning" /n 
-call :c 0a "5) See my packet trafic to a website" /n 
+call :c 0a "3) Live ip" /n
+call :c 0a "4) Shodan" /n
+call :c 0a "5) See my packet trafic to a website" /n
 echo.
 call :c 0d "Parrot"&call :c 0b ":/ "
-if exist d.vbs start d.vbs
-set /p choice= 
+set /p choice=
 if %choice% == 1 goto ip_resolver
 if %choice% == 2 goto uping
 if %choice% == 3 goto liveip
-if %choice% == 4 goto dnspoi
+if %choice% == 4 goto shodan
 if %choice% == 5 goto tracertt
 if %choice% == hid goto hidsecret
 if %choice% == exit exit
@@ -123,6 +123,9 @@ goto beg
 cls
 echo your ip is %PublicIP%
 call :c 0b "Type an IP adress : "&set /p ip=
+FOR /F "tokens=* USEBACKQ" %%F IN (`curl "https://ipapi.co/"%ip%"/latlong/  "`) DO (
+SET loc=%%F
+)
 cls
 call :c 0a "IP:          " &echo %ip%
 call :c 0a "Vendor name: "&curl "https://ipapi.co/"%ip%"/org/"&call :c 0A " " /n
@@ -135,12 +138,23 @@ call :c 0C "Continent:   "&curl "https://ipapi.co/"%ip%"/continent_code/  "&call
 call :c 0C "Time zone:   "&curl "https://ipapi.co/"%ip%"/timezone/  "&call :c 0A " " /n
 call :c 0C "Language:    "&curl "https://ipapi.co/"%ip%"/languages/  "&call :c 0A " " /n
 call :c 0C "Region:      "&curl "https://ipapi.co/"%ip%"/region/  "&call :c 0A " " /n
-echo press someting to continue
-pause >nul
+echo.
+call :c 0f "--------------------------------------------" /n
+call :c 0e "1) show location on map" /n
+call :c 0e "2) shodan look up" /n
+call :c 0e "3) store ip to cache" /n
+call :c 0e "0) back to menu" /n
+:bak
+set /p ipcho=
+if %ipcho% == 1 start www.google.com/maps/?q=%loc%
+if %ipcho% == 2 start https://www.shodan.io/host/%ip%
+if %ipcho% == 3 set ipcache=%ip%
+if %ipcho% == 0 goto menu
+goto bak
 goto menu
 
 
-:: ping 
+:: ping
 :uping
 cls
 set /a fnd=0
@@ -152,8 +166,8 @@ call :c 0D "PING RESULT:" /n
 set second=0
 :looping
 title Pinging 192.168.%first%.%second%
-ping -w 1 -n 1 192.168.%first%.%second% | find "TTL=" >nul 
-if errorlevel 1 ( 
+ping -w 1 -n 1 192.168.%first%.%second% | find "TTL=" >nul
+if errorlevel 1 (
     goto 1895462
 ) else (
 	set /a fnd=fnd+1
@@ -183,30 +197,102 @@ goto 14785
 
 :pwsh
 cls
-call :c 0b "1) sda poisoner" /n 
-call :c 0b "00) goto menu " /n 
-set /p choicep= 
+call :c 0b "1) sda poisoner" /n
+call :c 0b "00) goto menu " /n
+set /p choicep=
 if %choicep% == 00 goto menu
 goto pwsh
 
-:dnspoi
+:shodan
 cls
-echo 1) Try on my computer.
-echo 2) Generate a batch file.
-set /p choicep= 
-if %choicep% == 1 goto dnsme
-if %choicep% == 2 goto dnsgen
-:dnsme
-echo name a web site you want to apply the attack
-set /p foolsite= 
-echo set up the ip you want it to redirect.
-set /p foolip= 
+set qweri=webcam_XP
+if %shodanapi% == 0 call :c 0c "You didn't provided your shodan api key yet." /n
+if %shodanapi% == 1 goto shodan1
+echo.
+call :c 0a "1) provide my API key" /n
+call :c 0a "2) go get an api key" /n
+call :c 0a "3) try a free api" /n
+set /p shochoice=
+if %shochoice% == 1 goto providesho
+if %shochoice% == 2 start https://developer.shodan.io/
+if %shochoice% == 3 goto rdmapi
+goto shodan
+:rdmapi
+set shodanapikey=UNmOjxeFS2mPA3kmzm1sZwC0XjaTTksy
+goto shodan1
+:providesho
 cls
-echo You can try to join %foolsite% to see if it work.
-echo 
-echo press any key to continue.
+set /p shodanapikey=Your API key:
+set /a shodanapi=1
+goto shodan
+:shodan1
+cls
+call :c 0a "your API key is: " &call :c 0d "%shodanapikey%" /n
+call :c 0a "IP in cache:     " &call :c 0d "%ipcache%" /n
+call :c 0a "Query word:      " &call :c 0d "%qweri%" /n
+echo.
+call :c 0a "1) set another ip" /n
+call :c 0a "2) set query word" /n
+call :c 0a "3) global search" /n
+call :c 0a "4) global search matches" /n
+call :c 0a "5) query token search" /n
+call :c 0a "6) see crawler port scans" /n
+call :c 0a "7) all ip info" /n
+call :c 0a "8) change API" /n
+call :c 0a "0) back to menu" /n
+echo.
+call :c 0d "Parrot"&call :c 0b ":/ "
+set /p shodanchoice=
+if %shodanchoice% == 0 goto menu
+if %shodanchoice% == 1 goto changeipshodan
+if %shodanchoice% == 2 goto changequery
+if %shodanchoice% == 3 goto gloser
+if %shodanchoice% == 4 goto sematches
+if %shodanchoice% == 5 goto qweto
+if %shodanchoice% == 6 goto crawlerport
+if %shodanchoice% == 7 goto allipinfo
+if %shodanchoice% == 8 goto newapi
+goto shodan1
+:changeipshodan
+cls
+call :c 0a "set up an ip adress" /n
+set /p ipcache=
+goto shodan1
+:changequery
+cls
+call :c 0a "set another query word" /n
+set /p qweri=
+goto shodan1
+:allipinfo
+cls
+curl https://api.shodan.io/shodan/host/%ipcache%?key=%shodanapikey%
 pause > nul
-goto menu
+goto shodan1
+:gloser
+cls
+curl "https://api.shodan.io/shodan/host/search?key=%shodanapikey%&query=%qweri%"
+pause > nul
+goto shodan1
+:sematches
+cls
+curl "https://api.shodan.io/shodan/host/count?key=%shodanapikey&query=%qweri%"
+pause > nul
+goto shodan1
+:qweto
+cls
+curl "https://api.shodan.io/shodan/host/search/tokens?key=%shodanapikey%&query=%qweri%"
+pause > nul
+goto shodan1
+:crawlerport
+cls
+curl https://api.shodan.io/shodan/ports?key=%shodanapikey%
+pause > nul
+goto shodan1
+:newapi
+cls
+call :c 0a "set another API key" /n
+set /p shodanapikey=
+goto shodan1
 
 :tracertt
 cls
