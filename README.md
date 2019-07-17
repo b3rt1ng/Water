@@ -7,12 +7,15 @@ Water is a tool that allow you to get informations about an IP address.
 The script is using some shodan fonctionalyties and provide an accurate ip info gathering.
 I tried to make the tool as fluid as possible (i called it water).
 
-### what can i do with it ?
-```
--> See your ip address lively (usefull to check if your ip is hidden by your VPN)
--> get information about a remote IP
--> Scan your network's hosts
-```
+### why would i need this ?
+ water can be really usefull when it comes to information gathering. You can use it to get some usefulls informations about a website but also about someone.
+
+### Updates ideas.
+
+-automatic information gathering.
+-more ip information using basics calculs.
+-exif image information.
+-ip fishing url generator.
 
 ### Shodan
 [shodan](https://www.shodan.io/) is a search engine made to scan all kind of things related to internet connected devices.
