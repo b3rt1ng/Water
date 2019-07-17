@@ -20,7 +20,7 @@ Shodan provide some really usefull and easy to use api, allowing us to include i
 
 ### Why does the program won't work on my device ?
 ```
--> the most common issue is that the script just won't boot preoprely. it's probably because you downloaded the script directly. To fix this, just copy the entire script here and paste it on the batch file
+-> the most common issue is that the script just won't boot preoprely. it's probably because you downloaded the script directly. To fix this, just copy the entire script [here](https://raw.githubusercontent.com/b3rt1ng/Water/master/main.bat) and paste it on the batch file
 -> check if your computer's command prompt isn't bridled by an administrator, some command can be restricted.
 -> the program has been tested on windows 10, it's possible that some command aren't even existing on your version (like curl for example)
 -> try to run the program as an administrator (but this should not be a problem)
