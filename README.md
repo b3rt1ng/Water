@@ -16,6 +16,7 @@ I tried to make the tool as fluid as possible (i called it water).
 -more ip information using basics calculs.
 -exif image information.
 -ip fishing url generator.
+-reverse shell generator and listener
 
 ### Shodan
 [shodan](https://www.shodan.io/) is a search engine made to scan all kind of things related to internet connected devices.
