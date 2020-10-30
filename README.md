@@ -10,10 +10,6 @@ I tried to make the tool as fluid as possible (i called it water, i'm a funny li
 ### why would i need this ?
  water can be really usefull when it comes to information gathering. You can use it to get some usefulls informations about a website but also about someone.
 
-### Updates ideas.
-
-automatic information gathering | more ip information using basics calculs | exif image information | ip fishing url generator | reverse shell generator and listener
-
 ### Shodan
 [shodan](https://www.shodan.io/) is a search engine made to scan all kind of things related to internet connected devices.
 Shodan provide some really usefull and easy to use api, allowing us to include it on the script. In order to use the API, you'll need to make yourself an account on the website and you'll get an API key. you can see the api but clicking on "show api key".
