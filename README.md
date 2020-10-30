@@ -5,7 +5,7 @@ This project it still a work in progress.
 ## What is it ?
 Water is a tool that allow you to get informations about an IP address.
 The script is using some shodan fonctionalyties and provide an accurate ip info gathering.
-I tried to make the tool as fluid as possible (i called it water).
+I tried to make the tool as fluid as possible (i called it water, i'm a funny little guy).
 
 ### why would i need this ?
  water can be really usefull when it comes to information gathering. You can use it to get some usefulls informations about a website but also about someone.
